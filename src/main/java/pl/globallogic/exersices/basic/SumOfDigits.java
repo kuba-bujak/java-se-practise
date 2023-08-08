@@ -13,7 +13,7 @@ public class SumOfDigits {
     }
 
     public static int sumOfDigits(int number) {
-        int temp = 0;
+        int temp;
         int result = 0;
         if (number < 0) {
             temp = -number;
