@@ -9,7 +9,7 @@ public class CapitalizeText {
 
     private static StringBuilder process(String targetText) {
         String[] tokens = targetText.split(" ");
-        StringBuilder result = new StringBuilder("");
+        StringBuilder result = new StringBuilder();
         for (String token :
                 tokens) {
             result.append(capitalize(token)).append(" ");
