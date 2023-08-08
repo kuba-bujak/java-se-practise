@@ -9,7 +9,7 @@ public class Ex19SharedDigit {
     }
 
     private static boolean hasSharedDigit(int number1, int number2) {
-        if (!isValidRange(number1) || !isValidRange(number2)) return false;
+        if (isValid(number1) || isValid(number2)) return false;
         int digit1 = number1 / 10;
         int digit2 = number1 % 10;
         int digit3 = number2 / 10;
@@ -17,7 +17,7 @@ public class Ex19SharedDigit {
         return digit1 == digit3 || digit1 == digit4 || digit2 == digit3 || digit2 == digit4;
     }
 
-    private static boolean isValidRange(int num) {
-        return num >= 10 && num <= 99;
+    private static boolean isValid(int num) {
+        return num < 10 || num > 99;
     }
 }
