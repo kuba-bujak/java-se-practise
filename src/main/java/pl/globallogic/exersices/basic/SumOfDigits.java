@@ -2,7 +2,7 @@ package pl.globallogic.exersices.basic;
 
 import java.util.Scanner;
 
-public class Ex13SumOfDigits {
+public class SumOfDigits {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please pass a number: ");
