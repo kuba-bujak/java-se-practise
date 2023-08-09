@@ -5,7 +5,7 @@ public class Account {
     public final int id;
     public double balance;
 
-    public Account(String accountNumber, int id, double balance) {
+    public Account(int id, String accountNumber, double balance) {
         this.accountNumber = accountNumber;
         this.id = id;
         this.balance = balance;
@@ -24,6 +24,10 @@ public class Account {
     }
 
     public void setBalance(double balance) {
+        if (balance < 0) {
+            System.out.println("Balance can't be negative");
+            return;
+        }
         this.balance = balance;
     }
 }
