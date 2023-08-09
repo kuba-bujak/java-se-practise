@@ -15,7 +15,7 @@ public class PowerOfNumberCalculator {
     private static int calculatePower(int number, int power) {
         if (power < 0) return 0;
         if (power == 0) return 1;
-        int result = number;
+        int result = 1;
         for (int i = 1; i < power; i++) {
             result *= number;
         }
