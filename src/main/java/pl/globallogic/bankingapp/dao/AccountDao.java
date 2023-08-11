@@ -9,7 +9,7 @@ public class AccountDao {
         this.accounts[1] = new Account(1, "352163812", 280);
     }
 
-    public Account getAccountById (int accountId) {
+    public Account getAccountById(int accountId) {
         return accounts[accountId];
     }
 
