@@ -9,7 +9,15 @@ public class Ex26LargestPrime {
         System.out.println(getLargestPrime(-1));
     }
 
-    private static int getLargestPrime(int i) {
-        return i;
+    private static int getLargestPrime(int number) {
+        if (number <= 1) return -1;
+        int largestPrime = 2;
+        for (int i = 2; i <= number; i++) {
+            while(number % i == 0) {
+                largestPrime = i;
+                number /= i;
+            }
+        }
+        return largestPrime;
     }
 }
