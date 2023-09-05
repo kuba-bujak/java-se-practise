@@ -1,5 +1,6 @@
 package pl.globallogic.exersices.basic.Ex46Banking;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Bank {
@@ -12,17 +13,27 @@ public class Bank {
     }
 
     public boolean addBranch(String branchName) {
-        return branches.add(new Branch(branchName));
+        if (findBranch(branchName) == null) {
+            branches.add(new Branch(branchName));
+            return true;
+        }
+        return false;
     }
 
     public boolean addCustomer(String branchName, String customerName, double initialTransaction) {
         Branch foundBranch = findBranch(branchName);
-        foundBranch.newCustomer(customerName, initialTransaction)
-        return true;
+        if (foundBranch != null) {
+            return foundBranch.newCustomer(customerName, initialTransaction);
+        }
+        return false;
     }
 
-    public boolean addCustomerTranscaction(String branchName, String customerName,double transaction) {
-        return true;
+    public boolean addCustomerTransaction(String branchName, String customerName,double transaction) {
+        Branch foundBranch = findBranch(branchName);
+        if (foundBranch != null) {
+            return foundBranch.addCustomerTransaction(customerName, transaction);
+        }
+        return false;
     }
 
     public Branch findBranch(String branchName) {
@@ -32,5 +43,25 @@ public class Bank {
             }
         }
         return null;
+    }
+
+    public boolean listCustomers(String branchName, boolean printTransaction) {
+        Branch foundBranch = findBranch(branchName);
+        if (foundBranch != null) {
+            System.out.printf("Customer details for branch '%s' \n", branchName);
+            ArrayList<Customer> customers = foundBranch.getCustomers();
+            for (Customer customer : customers) {
+                System.out.printf("Customer: %s [%s] \n", customer.getName(), customers.indexOf(customer) + 1);
+                if (printTransaction) {
+                    System.out.println("Transactions:");
+                    ArrayList<Double> transactions = customer.getTransactions();
+                    for (Double transaction : transactions) {
+                        System.out.printf("[%s] Amount %s \n", transactions.indexOf(transaction) + 1, transaction);
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }

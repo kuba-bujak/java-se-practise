@@ -8,10 +8,19 @@ public class Customer {
 
     public Customer(String name, double initialTransaction) {
         this.name = name;
-        this.transactions = new ArrayList<Double>((int) initialTransaction);
+        this.transactions = new ArrayList<>();
+        addTransaction(initialTransaction);
     }
 
     public String getName() {
         return name;
+    }
+
+    public ArrayList<Double> getTransactions() {
+        return transactions;
+    }
+
+    public void addTransaction(double transaction) {
+        transactions.add(transaction);
     }
 }
