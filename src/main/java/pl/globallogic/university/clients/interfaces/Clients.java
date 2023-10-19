@@ -1,4 +1,6 @@
-package pl.globallogic.university.clients;
+package pl.globallogic.university.clients.interfaces;
+
+import pl.globallogic.university.clients.exceptions.ClientNotFoundException;
 
 import java.time.LocalDate;
 
