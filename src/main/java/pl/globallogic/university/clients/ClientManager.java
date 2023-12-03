@@ -15,7 +15,7 @@ public class ClientManager implements Clients {
 
     protected Logger logger = LoggerFactory.getLogger(ClientManager.class);
 
-    private Client getClientById(String clientId) {
+    public Client getClientById(String clientId) {
         if (clients.containsKey(clientId)) {
             return clients.get(clientId);
         }
@@ -34,30 +34,54 @@ public class ClientManager implements Clients {
 
     @Override
     public String activatePremiumAccount(String clientId){
-        Client client = getClientById(clientId);
-        client.activatePremium();
-        premiumClients.add(client);
-        return clientId;
+        try {
+            Client client = getClientById(clientId);
+            client.activatePremium();
+            premiumClients.add(client);
+            return clientId;
+        } catch (ClientNotFoundException e) {
+            logger.error("Error activating premium account for client '{}': {}", clientId, e.getMessage());
+            throw e;
+        }
+
     }
 
     @Override
     public String getClientFullName(String clientId) {
-        Client client = getClientById(clientId);
-        logger.info("Client's firstName: '{}' and lastName: '{}'", client.getFirstName(), client.getLastName());
-        return client.getFirstName() + ' ' + client.getLastName();
+        try {
+            Client client = getClientById(clientId);
+            logger.info("Client's firstName: '{}' and lastName: '{}'", client.getFirstName(), client.getLastName());
+            return client.getFirstName() + ' ' + client.getLastName();
+        } catch (ClientNotFoundException e) {
+            logger.error("Error retrieving client full name for ID '{}': {}", clientId, e.getMessage());
+            throw e;
+        }
+
     }
 
     @Override
     public LocalDate getClientCreationDate(String clientId) {
-        Client client = getClientById(clientId);
-        logger.info("Client's creation date: '{}'", client.getCreationDate());
-        return client.getCreationDate();
+        try {
+            Client client = getClientById(clientId);
+            logger.info("Client's creation date: '{}'", client.getCreationDate());
+            return client.getCreationDate();
+        } catch (ClientNotFoundException e) {
+            logger.error("Error retrieving client creation date for ID '{}': {}", clientId, e.getMessage());
+            throw e;
+        }
+
     }
 
     @Override
     public boolean isPremiumClient(String clientId) {
-        Client client = getClientById(clientId);
-        return client.isPremium();
+        try {
+            Client client = getClientById(clientId);
+            return client.isPremium();
+        } catch (ClientNotFoundException e) {
+            logger.error("Error checking premium status for client '{}': {}", clientId, e.getMessage());
+            throw e;
+        }
+
     }
 
     @Override
