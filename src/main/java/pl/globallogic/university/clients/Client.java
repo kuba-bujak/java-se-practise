@@ -11,8 +11,8 @@ class Client {
     private boolean isPremium;
     private LocalDate creationDate;
 
-    public Client(String clientId, String firstName, String lastName) {
-        this.clientId = clientId;
+    public Client(String firstName, String lastName) {
+        this.clientId = UUID.randomUUID().toString();
         this.firstName = firstName;
         this.lastName = lastName;
         this.creationDate = LocalDate.now();

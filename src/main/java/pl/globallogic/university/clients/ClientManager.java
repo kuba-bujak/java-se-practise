@@ -15,10 +15,17 @@ public class ClientManager implements Clients {
 
     protected Logger logger = LoggerFactory.getLogger(ClientManager.class);
 
+    private Client getClientById(String clientId) {
+        if (clients.containsKey(clientId)) {
+            return clients.get(clientId);
+        }
+        throw new ClientNotFoundException("Client not found");
+    }
+
     @Override
     public String createNewClient(String firstName, String lastName) {
-        String clientId = UUID.randomUUID().toString();
-        Client newClient = new Client(clientId, firstName, lastName);
+        Client newClient = new Client(firstName, lastName);
+        String clientId = newClient.getClientId();
         logger.info("User was created successfully with id: {}", clientId);
         clients.put(clientId, newClient);
         logger.info("User was added to the clients list with id: {}", clients.get(clientId).getClientId());
@@ -27,46 +34,30 @@ public class ClientManager implements Clients {
 
     @Override
     public String activatePremiumAccount(String clientId){
-        if (clients.containsKey(clientId)) {
-            Client client = clients.get(clientId);
-            client.activatePremium();
-            premiumClients.add(client);
-            return clientId;
-        } else {
-            throw new ClientNotFoundException("Client not found");
-        }
+        Client client = getClientById(clientId);
+        client.activatePremium();
+        premiumClients.add(client);
+        return clientId;
     }
 
     @Override
     public String getClientFullName(String clientId) {
-        if (clients.containsKey(clientId)) {
-            Client client = clients.get(clientId);
-            logger.info("Client's firstName: '{}' and lastName: '{}'", client.getFirstName(), client.getLastName());
-            return client.getFirstName() + ' ' + client.getLastName();
-        } else {
-            throw new ClientNotFoundException("Client not found");
-        }
+        Client client = getClientById(clientId);
+        logger.info("Client's firstName: '{}' and lastName: '{}'", client.getFirstName(), client.getLastName());
+        return client.getFirstName() + ' ' + client.getLastName();
     }
 
     @Override
     public LocalDate getClientCreationDate(String clientId) {
-        if (clients.containsKey(clientId)) {
-            Client client = clients.get(clientId);
-            logger.info("Client's creation date: '{}'", client.getCreationDate());
-            return client.getCreationDate();
-        } else {
-            throw new ClientNotFoundException("Client not found");
-        }
+        Client client = getClientById(clientId);
+        logger.info("Client's creation date: '{}'", client.getCreationDate());
+        return client.getCreationDate();
     }
 
     @Override
     public boolean isPremiumClient(String clientId) {
-        if (clients.containsKey(clientId)) {
-            Client client = clients.get(clientId);
-            return client.isPremium();
-        } else {
-            throw new ClientNotFoundException("Client not found");
-        }
+        Client client = getClientById(clientId);
+        return client.isPremium();
     }
 
     @Override
