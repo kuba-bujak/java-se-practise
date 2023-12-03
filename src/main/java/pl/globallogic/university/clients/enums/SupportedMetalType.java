@@ -22,4 +22,13 @@ public enum SupportedMetalType {
     public double getDensity() {
         return density;
     }
+
+    public static boolean isValid(String metalType) {
+        for (SupportedMetalType value : SupportedMetalType.values()) {
+            if (value.name().equals(metalType)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
