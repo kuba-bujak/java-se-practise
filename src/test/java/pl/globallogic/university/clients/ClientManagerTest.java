@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import pl.globallogic.university.clients.enums.SupportedMetalType;
 
 import java.time.LocalDate;
@@ -18,7 +15,7 @@ public class ClientManagerTest {
     private ClientManager clientManager;
     protected Logger logger = LoggerFactory.getLogger(ClientManagerTest.class);
 
-    @BeforeClass
+    @BeforeMethod
     public void setUp() {
         logger.info("========================================");
         logger.info("Test SetUp");
@@ -192,11 +189,5 @@ public class ClientManagerTest {
         // Then
         Assert.assertEquals(clientManager.getNumberOfClients(), numberOfClientsToCreate);
         Assert.assertEquals(clientManager.getNumberOfPremiumClients(), numberOfPremiumClients);
-    }
-
-    @AfterMethod(alwaysRun = true)
-    public void cleanUp() {
-        logger.info("Cleaning environment after test");
-        clientManager.cleanData();
     }
 }

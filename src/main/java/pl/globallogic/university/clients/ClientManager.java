@@ -95,9 +95,4 @@ public class ClientManager implements Clients {
         logger.info("There are: {} premium clients", premiumClients.size());
         return premiumClients.size();
     }
-
-    public void cleanData() {
-        clients.clear();
-        premiumClients.clear();
-    }
 }

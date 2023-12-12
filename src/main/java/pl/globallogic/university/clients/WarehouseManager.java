@@ -16,7 +16,7 @@ import java.util.Map;
 public class WarehouseManager implements Warehouse {
 
     private final Map<String, Client> wareHouseClients = new HashMap<>();
-    private final double totalWareHouseVolume = 1000000.0;
+    private double totalWareHouseVolume = 1000.0;
     private final ClientManager clientManager;
 
     protected Logger logger = LoggerFactory.getLogger(WarehouseManager.class);
@@ -42,6 +42,7 @@ public class WarehouseManager implements Warehouse {
 
             client.addMetalIngot(metalType, mass);
             logger.info("Metal ingot added for client '{}'. Metal type: '{}', Mass: '{}'", clientId, metalType, mass);
+            totalWareHouseVolume -= mass / metalType.getDensity();
 
         } catch (ClientNotFoundException e) {
             logger.error("Error adding metal ingot for client '{}': {}", clientId, e.getMessage());
@@ -67,7 +68,7 @@ public class WarehouseManager implements Warehouse {
         for (Map.Entry<SupportedMetalType, Double> entry : metalTypeToMass.entrySet()) {
             SupportedMetalType metalType = entry.getKey();
             double mass = entry.getValue();
-            totalOccupiedVolume += metalType.getDensity() * mass;
+            totalOccupiedVolume += mass / metalType.getDensity();
         }
 
         return totalOccupiedVolume;
@@ -92,14 +93,11 @@ public class WarehouseManager implements Warehouse {
 
         logger.info("Total occupied volume: '{}'", totalOccupiedVolume);
         logger.info("Total volume: '{}'", totalVolume);
-        return (totalOccupiedVolume + metalType.getDensity() * mass) <= totalVolume;
+        return (totalOccupiedVolume + mass / metalType.getDensity()) <= totalVolume;
     }
 
     private double getTotalWarehouseVolume() {
         return totalWareHouseVolume;
     }
 
-    public void cleanData() {
-        wareHouseClients.clear();
-    }
 }

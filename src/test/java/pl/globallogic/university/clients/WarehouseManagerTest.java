@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pl.globallogic.university.clients.enums.SupportedMetalType;
 
@@ -16,7 +17,7 @@ public class WarehouseManagerTest {
     private ClientManager clientManager;
     protected Logger logger = LoggerFactory.getLogger(ClientManagerTest.class);
 
-    @BeforeClass
+    @BeforeMethod
     public void setUp() {
         logger.info("========================================");
         logger.info("Test SetUp");
@@ -68,8 +69,8 @@ public class WarehouseManagerTest {
         String clientId = clientManager.createNewClient("John", "Doe");
 
         // When
-        warehouseManager.addMetalIngot(clientId, SupportedMetalType.COPPER, 50000.0);
-        warehouseManager.addMetalIngot(clientId, SupportedMetalType.TIN, 60000.0);
+        warehouseManager.addMetalIngot(clientId, SupportedMetalType.COPPER, 5000000.0);
+        warehouseManager.addMetalIngot(clientId, SupportedMetalType.TIN, 6000000.0);
 
         // Then (Expecting an exception)
     }
@@ -87,8 +88,8 @@ public class WarehouseManagerTest {
 
         // Then
         double totalVolume = warehouseManager.getTotalVolumeOccupiedByClient(clientId);
-        double expectedVolume = SupportedMetalType.COPPER.getDensity() * massCopper +
-                SupportedMetalType.TIN.getDensity() * massTin;
+        double expectedVolume = massCopper / SupportedMetalType.COPPER.getDensity()  +
+                massTin / SupportedMetalType.TIN.getDensity();
 
         Assert.assertEquals(totalVolume, expectedVolume);
     }
@@ -125,11 +126,5 @@ public class WarehouseManagerTest {
         Map<SupportedMetalType, Double> metalTypesToMass = warehouseManager.getMetalTypesToMassStoredByClient(clientId);
         Assert.assertTrue(metalTypesToMass.containsKey(metalType));
         Assert.assertEquals(metalTypesToMass.get(metalType), mass);
-    }
-
-    @AfterMethod(alwaysRun = true)
-    public void cleanUp() {
-        logger.info("Cleaning environment after test");
-        warehouseManager.cleanData();
     }
 }
