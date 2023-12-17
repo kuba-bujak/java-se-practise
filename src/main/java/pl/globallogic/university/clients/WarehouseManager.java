@@ -9,13 +9,11 @@ import pl.globallogic.university.clients.exceptions.ProhibitedMetalTypeException
 import pl.globallogic.university.clients.interfaces.Warehouse;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class WarehouseManager implements Warehouse {
 
-    private final Map<String, Client> wareHouseClients = new HashMap<>();
     private double totalWareHouseVolume = 1000.0;
     private final ClientManager clientManager;
 
@@ -42,7 +40,7 @@ public class WarehouseManager implements Warehouse {
 
             client.addMetalIngot(metalType, mass);
             logger.info("Metal ingot added for client '{}'. Metal type: '{}', Mass: '{}'", clientId, metalType, mass);
-            totalWareHouseVolume -= mass / metalType.getDensity();
+            totalWareHouseVolume -= metalType.getVolume(mass);
 
         } catch (ClientNotFoundException e) {
             logger.error("Error adding metal ingot for client '{}': {}", clientId, e.getMessage());
@@ -68,7 +66,7 @@ public class WarehouseManager implements Warehouse {
         for (Map.Entry<SupportedMetalType, Double> entry : metalTypeToMass.entrySet()) {
             SupportedMetalType metalType = entry.getKey();
             double mass = entry.getValue();
-            totalOccupiedVolume += mass / metalType.getDensity();
+            totalOccupiedVolume += metalType.getVolume(mass);
         }
 
         return totalOccupiedVolume;
@@ -93,7 +91,7 @@ public class WarehouseManager implements Warehouse {
 
         logger.info("Total occupied volume: '{}'", totalOccupiedVolume);
         logger.info("Total volume: '{}'", totalVolume);
-        return (totalOccupiedVolume + mass / metalType.getDensity()) <= totalVolume;
+        return (totalOccupiedVolume + metalType.getVolume(mass)) <= totalVolume;
     }
 
     private double getTotalWarehouseVolume() {

@@ -13,7 +13,7 @@ class Client {
     private final String firstName;
     private final String lastName;
     private boolean isPremium;
-    private LocalDate creationDate;
+    private final LocalDate creationDate;
     private final Map<SupportedMetalType, Double> metalTypesToMass;
 
 

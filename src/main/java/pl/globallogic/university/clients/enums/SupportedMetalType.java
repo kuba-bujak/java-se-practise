@@ -22,4 +22,8 @@ public enum SupportedMetalType {
     public double getDensity() {
         return density;
     }
+
+    public double getVolume(double mass) {
+        return mass / getDensity();
+    }
 }

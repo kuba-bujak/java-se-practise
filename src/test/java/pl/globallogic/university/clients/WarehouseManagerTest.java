@@ -9,6 +9,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pl.globallogic.university.clients.enums.SupportedMetalType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,16 +30,35 @@ public class WarehouseManagerTest {
     public void testAddMetalIngot() {
         // Given
         String clientId = clientManager.createNewClient("John", "Doe");
-
-        // When
         SupportedMetalType metalType = SupportedMetalType.COPPER;
         double mass = 10.0;
+
+        // When
         warehouseManager.addMetalIngot(clientId, metalType, mass);
+        Map<SupportedMetalType, Double> metalTypesToMass = warehouseManager.getMetalTypesToMassStoredByClient(clientId);
 
         // Then
-        Map<SupportedMetalType, Double> metalTypesToMass = warehouseManager.getMetalTypesToMassStoredByClient(clientId);
         Assert.assertTrue(metalTypesToMass.containsKey(metalType));
         Assert.assertEquals(metalTypesToMass.get(metalType), mass);
+    }
+
+    @Test
+    public void testAddAllMetalIngots() {
+        // Given
+        String[] metals = {"COPPER", "TIN", "IRON", "LEAD", "SILVER", "TUNGSTEN", "GOLD", "PLATINUM"};
+        String clientId = clientManager.createNewClient("John", "Doe");
+        double mass = 10.0;
+
+        // When
+        clientManager.activatePremiumAccount(clientId);
+        for (int i = 0; i < metals.length; i++) {
+            SupportedMetalType metalType = SupportedMetalType.valueOf(metals[i]);
+            warehouseManager.addMetalIngot(clientId, metalType, mass);
+        }
+        Map<SupportedMetalType, Double> metalTypesToMass = warehouseManager.getMetalTypesToMassStoredByClient(clientId);
+
+        // Then
+        Assert.assertTrue(metalTypesToMass.size() == metals.length);
     }
 
     @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = "Client not found")
